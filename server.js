@@ -3,6 +3,7 @@
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 // Import Express
 var express = require('express');
@@ -18,13 +19,15 @@ const con = require('./config/mysql');
 const { API_PORT } = process.env;
 const port = process.env.PORT || API_PORT;
 
+//Require Middleware
+const auth = require('./middleware/auth');
+
 // allow json data to be passed in the body of requests
 app.use(express.json());
 
 app.use('/static', express.static('public'));
 
 app.post('/register', async (req, res) => {
-  // Our register logic starts here
   try {
     // Get user input
     const { first, last, email, password } = req.body;
@@ -34,19 +37,18 @@ app.post('/register', async (req, res) => {
       res.status(400).send("All input is required");
     }
 
-    // check if user already exist
     // Validate if user exist in our database
-    // const oldUser = await User.findOne({ email });
     let oldUser = await con.getUser(email);
 
     if (oldUser != undefined) {
       return res.status(409).send("User Already Exist. Please Login");
     }
 
+    let salt = crypto.randomBytes(32).toString('hex');
     //Encrypt user password
-    let encryptedPassword = await bcrypt.hash(password, 10);
+    let encryptedPassword = await bcrypt.hash(password + salt, 10);
 
-    let user = await con.createUser([first, last, email, encryptedPassword]);
+    let user = await con.createUser([first, last, email, encryptedPassword, salt]);
 
     // Create token
     const token = jwt.sign(
@@ -62,7 +64,6 @@ app.post('/register', async (req, res) => {
       user_first: first,
       user_last: last,
       user_email: email,
-      user_password: encryptedPassword,
       token: token
     };
 
@@ -71,12 +72,10 @@ app.post('/register', async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
 });
 
 app.post("/login", async (req, res) => {
 
-  // Our login logic starts here
   try {
     // Get user input
     const { email, password } = req.body;
@@ -88,7 +87,7 @@ app.post("/login", async (req, res) => {
 
     let user = await con.getUser(email);
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(password + user.salt, user.password))) {
       // Create token
       const token = jwt.sign(
         { user_id: user.user_id, email },
@@ -104,7 +103,6 @@ app.post("/login", async (req, res) => {
         user_first: user.first,
         user_last: user.last,
         user_email: user.email,
-        user_password: user.password,
         token: token
       };
 
@@ -115,7 +113,10 @@ app.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
+});
+
+app.post('/welcome', auth, (req, res) => {
+  res.status(200).send("Welcome 🙌 ");
 });
 
 // index page
