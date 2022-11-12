@@ -1,0 +1,16 @@
+{
+  "name": "Volleyball_Web_App",
+  "version": "1.0.0",
+  "description": "Volleyball Node.js App with EJS templating on Docker",
+  "author": "Rofel Ganado <rofel_p_ganado@hotmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
