@@ -13,6 +13,12 @@ function handleSubmit(e) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(value),
+  })
+  .then((response) => response.json())
+  .then(res => {
+    if (res.token) {
+      window.location.href = '/';
+    }
   });
 
 }

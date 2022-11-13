@@ -4,6 +4,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 
 // Import Express
 var express = require('express');
@@ -21,6 +22,8 @@ const port = process.env.PORT || API_PORT;
 
 //Require Middleware
 const auth = require('./middleware/auth');
+
+app.use(cookieParser());
 
 // allow json data to be passed in the body of requests
 app.use(express.json());
@@ -106,7 +109,7 @@ app.post("/api/login", async (req, res) => {
         token: token
       };
 
-      res.status(200).json(output);
+      res.cookie('token', token, { httpOnly: true }).status(200).json(output);
     } else {
       res.status(400).send("Invalid Credentials");
     }
@@ -117,7 +120,9 @@ app.post("/api/login", async (req, res) => {
 
 // index page
 app.get('/', auth, function(req, res) {
+  console.log(req.auth);
   if (!req.auth) {
+    console.log('Not Authenticated');
     res.redirect('/login');
   }
 
