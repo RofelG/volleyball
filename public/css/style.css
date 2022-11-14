@@ -1,0 +1,49 @@
+.filter-row {
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.filter-row::-webkit-scrollbar {
+  display: none;
+}
+.filter-row .filter-btn {
+  cursor: pointer;
+}
+.filter-row .filter-btn svg {
+  height: 1.5rem;
+  color: rgb(113, 113, 113);
+  transition: color 0.3s ease-out;
+}
+.filter-row .filter-btn svg:hover {
+  color: rgb(0, 0, 0);
+}
+.filter-row .filter-btn span {
+  font-size: 0.8rem;
+}
+
+.card {
+  cursor: pointer;
+}
+.card .card-body.card-event svg {
+  height: 6rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  opacity: 0.3;
+  transition: opacity 0.3s ease-out;
+}
+.card .card-body.card-event svg:hover {
+  opacity: 0.8;
+}
+.card .card-body .max-people {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+footer {
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+}/*# sourceMappingURL=style.css.map */

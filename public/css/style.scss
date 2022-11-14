@@ -1,0 +1,54 @@
+
+.filter-row {
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    cursor: pointer;
+    svg {
+      height: 1.5rem;
+      color: rgb(113, 113, 113);
+      transition: color 0.3s ease-out;
+      &:hover {
+        color: rgb(0, 0, 0);
+      }
+    }
+    span {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.card {
+  cursor: pointer;
+  .card-body {
+    &.card-event {
+      svg {
+        height: 6rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        opacity: 0.3;
+        transition: opacity 0.3s ease-out;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+    .max-people {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+}
+
+footer {
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+}
