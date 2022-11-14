@@ -86,6 +86,7 @@ app.post("/api/login", async (req, res) => {
     // Validate user input
     if (!(email && password)) {
       res.status(400).send("All input is required");
+      return;
     }
 
     let user = await con.getUser(email);
@@ -114,6 +115,17 @@ app.post("/api/login", async (req, res) => {
       res.status(400).send("Invalid Credentials");
     }
   } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get('/api/events/get', async (req, res) => {
+  try {
+    // Validate if user exist in our database
+    let output = await con.getEvents(req);
+    res.status(200).json(output);
+
+  } catch(err) {
     console.log(err);
   }
 });
