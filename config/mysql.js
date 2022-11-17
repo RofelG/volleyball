@@ -25,5 +25,10 @@ module.exports = {
     }
     const result = await con.query(query, params).catch(err => { throw err} );
     return (result === undefined ? undefined : JSON.parse(JSON.stringify(result)));
+  },
+  createEvent: async(req, res) => {
+    let query = 'INSERT INTO event (cost, date_start, date_end, location, max, name, organizer, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const event = await con.query(query, req).catch(err => { throw err} );
+    return event.insertId;
   }
 }

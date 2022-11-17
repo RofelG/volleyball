@@ -128,6 +128,34 @@ app.get('/api/events/get', async (req, res) => {
   }
 });
 
+// app.get('/api/events/get/:id', async (req, res) => {
+//   try {
+//     let output = await con.getEvent(req);
+//     res.status(200).json(output);
+//   } catch(err) {
+//     console.log(err);
+//   }
+// });
+
+app.post('/api/events/post', async (req, res) => {
+  try {
+    // Get user input
+    const { cost, date_start, date_end, location, max, name, organizer, type, description } = req.body;
+
+    // Validate user input
+    if (!(cost && date_start && date_end && location && max && name && organizer && type)) {
+      res.status(400).send("All input is required");
+    }
+
+    let event = await con.createEvent([cost, date_start, date_end, location, max, name, organizer, type, description]);
+
+    // return new event
+    res.status(201).json(event);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // index page
 app.get('/', auth, function(req, res) {
   if (!req.auth) {
