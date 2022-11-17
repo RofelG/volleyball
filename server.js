@@ -121,10 +121,8 @@ app.post("/api/login", async (req, res) => {
 
 app.get('/api/events/get', async (req, res) => {
   try {
-    // Validate if user exist in our database
     let output = await con.getEvents(req);
     res.status(200).json(output);
-
   } catch(err) {
     console.log(err);
   }
@@ -132,7 +130,6 @@ app.get('/api/events/get', async (req, res) => {
 
 // index page
 app.get('/', auth, function(req, res) {
-  console.log(req.auth);
   if (!req.auth) {
     console.log('Not Authenticated');
     res.redirect('/login');

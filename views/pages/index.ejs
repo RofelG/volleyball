@@ -27,20 +27,9 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3" data-bs-toggle="modal" data-bs-target="#modalRegister">
-        <div class="card h-100">
-          <div class="card-body position-relative">
-            <h5 class="card-title">Volleyball Sesh</h5>
-            <span class="max-people">15 <i class="fa-solid fa-user-group"></i></span>
-            <span>Nov 15, 9pm - 11pm</span>
-            <p>Z5 Courts</p>
-            <p>A small description on the event. Maybe it's a scrimmage, maybe it's a practice.</p>
-          </div>
-        </div>
-      </div>
+    <div class="row" id="eventContainer">
 
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3" data-bs-toggle="modal" data-bs-target="#modalEvent">
+      <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3" id="eventAdd" data-bs-toggle="modal" data-bs-target="#modalEvent">
         <div class="card h-100">
           <div class="card-body position-relative card-event">
             <i class="fa-solid fa-circle-plus"></i>
@@ -56,6 +45,7 @@
 <%- include('../partials/footer'); %>
 
 <script src="/static/js/site.js"></script>
+<script src="/static/js/index.js"></script>
 
 </body>
 </html>
