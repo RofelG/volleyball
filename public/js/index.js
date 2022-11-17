@@ -1,8 +1,5 @@
 //fetch events from database
 function getEvents() {
-  if (sessionStorage.getItem("offset") === undefined) {
-    sessionStorage.setItem("offset", 0);
-  }
 
   fetch('/api/events/get?offset=' + sessionStorage.getItem('offset'), {
     method: 'GET',
@@ -12,7 +9,6 @@ function getEvents() {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
 
     if (document.querySelector('#eventAdd')) {
       document.querySelector('#eventAdd').remove();
@@ -20,7 +16,12 @@ function getEvents() {
 
     let eventContainer = document.getElementById("eventContainer");
 
+    if (eventContainer.querySelector('.modal-event-add')) {
+      eventContainer.querySelector('.modal-event-add').remove();
+    }
+
     Array.from(data).forEach(event => {
+      sessionStorage.setItem("offset", parseInt(sessionStorage.getItem('offset')) + 1);
 
       let div = document.createElement("div");
       div.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "col-xxl-2", "py-3");
@@ -54,14 +55,12 @@ function getEvents() {
       dateObj = new Date(event.date_end);
       let option, dateEnd;
       if (calendarStart[0] === calendarEnd[0]) {
-        console.log("same day");
         option = { hour: 'numeric', minute: 'numeric' };
         dateEnd = dateObj.toLocaleTimeString("en", option);
       } else {
         option = { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         dateEnd = dateObj.toLocaleDateString("en", option);
       }
-      console.log(dateObj);
 
       date.innerHTML = "<i class='fa-regular fa-calendar'></i> " + dateStartCal + "<div class='text-nowrap'>" + dateStart + " - " + dateEnd + "</div>";
 
@@ -92,7 +91,7 @@ function getEvents() {
     sessionStorage.setItem("offset", parseInt(sessionStorage.getItem("offset")) + 1);
 
     let div = document.createElement("div");
-    div.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "col-xxl-2", "py-3");
+    div.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "col-xxl-2", "py-3", "modal-event-add");
     div.setAttribute("data-bs-toggle", "modal");
     div.setAttribute("data-bs-target", "#modalEvent");
 
@@ -115,5 +114,6 @@ function getEvents() {
   });
 }
 
-getEvents();
+sessionStorage.setItem("offset", 0);
 
+getEvents();

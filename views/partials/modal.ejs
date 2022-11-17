@@ -17,19 +17,70 @@
 </div>
 
 <div class="modal fade" id="modalEvent" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalEventId" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalEventId">Add Event</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        Body
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
+      <form data-action="/api/events/post" data-callback="getEvents" id="eventPostForm">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Event Name">
+                <label for="name" class="form-label">Event Name</label>
+              </div>
+            </div>
+            <div class="form-group col-6 ">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="cost" name="cost" step="0.01">
+                <label for="cost" class="form-label">Cost</label>
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="max" name="max" step="1">
+                <label for="max" class="form-label">Max</label>
+              </div>
+            </div>
+            <div class="form-group col-12 my-3">
+              <div class="form-floating">
+                <textarea class="form-control" id="description" name="description" placeholder="Description" style="height: 100px"></textarea>
+                <label for="description" class="form-label">Description</label>
+              </div>
+            </div>
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="location" name="location" placeholder="Location">
+                <label for="location" class="form-label">Location</label>
+              </div>
+            </div>
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="type" name="type" placeholder="Type">
+                <label for="type" class="form-label">Type</label>
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="date_start" name="date_start" placeholder="Date">
+                <label for="date_start" class="form-label">Date Start</label>
+              </div>
+            </div>
+            <div class="form-group col-6">
+              <div class="form-floating">
+                <input type="datetime-local" class="form-control" id="date_end" name="date_end" placeholder="Date">
+                <label for="date_end" class="form-label">Date End</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" data-bs-dismiss="modal"></input>
+        </div>
+      </form>
     </div>
   </div>
 </div>

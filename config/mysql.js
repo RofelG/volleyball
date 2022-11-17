@@ -15,14 +15,17 @@ module.exports = {
     let query = 'SELECT * FROM event WHERE 1=1 ';
     let params = [];
     let body = req.body;
+    let get = req.query;
     if (body.filter) {
       query += 'AND type LIKE ? ';
       params.push('%' + body.filter + '%');
     }
     query += 'ORDER BY date_start DESC LIMIT 25';
-    if (body.offset) {
-      query += ' OFFSET ' + body.offset;
+    if (get.offset > 0) {
+      query += ' OFFSET ' + (get.offset - 1);
     }
+
+    console.log(query);
     const result = await con.query(query, params).catch(err => { throw err} );
     return (result === undefined ? undefined : JSON.parse(JSON.stringify(result)));
   },

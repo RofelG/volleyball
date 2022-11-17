@@ -16,8 +16,18 @@ function handleSubmit(e) {
   })
   .then((response) => response.json())
   .then(res => {
-    if (res.token) {
-      window.location.href = '/';
+    if (res.user_id) {
+      sessionStorage.setItem('user', res.user_id);
+      if (res.token) {
+        window.location.href = '/';
+      }
+    }
+
+    if (e.target.getAttribute('data-callback')) {
+      let fn = window[e.target.getAttribute('data-callback')];
+      if (typeof fn === 'function') {
+        fn();
+      }
     }
   });
 

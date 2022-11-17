@@ -140,12 +140,27 @@ app.get('/api/events/get', async (req, res) => {
 app.post('/api/events/post', async (req, res) => {
   try {
     // Get user input
-    const { cost, date_start, date_end, location, max, name, organizer, type, description } = req.body;
+    const { cost, date_start, date_end, location, max, name, type, description } = req.body;
 
     // Validate user input
-    if (!(cost && date_start && date_end && location && max && name && organizer && type)) {
+    if (!(cost && date_start && date_end && location && max && name && type)) {
       res.status(400).send("All input is required");
     }
+
+    let cookie = req.header('Cookie');
+    cookie = cookie.split(';');
+    let token;
+    for (let i = 0; i < cookie.length; i++) {
+      if (cookie[i].includes('token')) {
+        let temp = cookie[i].split('=');
+        token = temp[1];
+      }
+    }
+
+    let organizer;
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
+      organizer = user.user_id;
+    });
 
     let event = await con.createEvent([cost, date_start, date_end, location, max, name, organizer, type, description]);
 
