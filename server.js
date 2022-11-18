@@ -221,6 +221,10 @@ app.get('/login', function(req, res) {
   res.render('pages/login');
 });
 
+app.get('/register', function(req, res) {
+  res.render('pages/register');
+});
+
 app.listen(port, () => {
   console.log('Server is listening http://localhost:' + port);
 });

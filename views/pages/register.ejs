@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<%- include('../partials/head'); %>
+
+<body>
+
+<main>
+  <div class="col-12 col-md-4 col-lg-3 col-xl-2 position-absolute top-50 start-50 translate-middle">
+    <div class="card m-4 m-md-0">
+      <div class="card-body">
+        <h5 class="card-title">Register</h5>
+        <form class="row" data-action="/api/register">
+          <div class="form-group col-6 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="first" name="first" placeholder="First">
+              <label for="first" class="form-label">First</label>
+            </div>
+          </div>
+          <div class="form-group col-6 mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="last" name="last" placeholder="Last">
+              <label for="last" class="form-label">Last</label>
+            </div>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+              <label for="email" class="form-label">Email</label>
+            </div>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <div class="form-floating">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              <label for="password" class="form-label">Password</label>
+            </div>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <div class="form-floating">
+              <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Password">
+              <label for="password_confirm" class="form-label">Confirm Password</label>
+            </div>
+          </div>
+          <div class="form-group col-12">
+            <button type="submit" class="btn btn-primary w-100 mb-3">Sign Up</button>
+          </div>
+          <div class="form-group col-12">
+            <p class="text-center">Have a login? <a href="/login">Login</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/static/js/site.js"></script>
+
+</body>
+</html>

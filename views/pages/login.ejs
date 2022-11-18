@@ -6,21 +6,29 @@
 <body>
 
 <main>
-  <div class="col-12 col-md-4 col-lg-3 position-absolute top-50 start-50 translate-middle">
+  <div class="col-12 col-md-4 col-lg-3 col-xl-2 position-absolute top-50 start-50 translate-middle">
     <div class="card m-4 m-md-0">
       <div class="card-body">
         <h5 class="card-title">Login</h5>
-        <form data-action="/api/login">
-          <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <form class="row" data-action="/api/login">
+          <div class="form-group col-12 mb-3">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+              <label for="email" class="form-label">Email</label>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
+          <div class="form-group col-12 mb-3">
+            <div class="form-floating">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              <label for="password" class="form-label">Password</label>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="form-group col-12">
+            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+          </div>
+          <div class="form-group col-12">
+            <p class="text-center">Not a member? <a href="/register">Sign Up</a></p>
+          </div>
         </form>
       </div>
     </div>
