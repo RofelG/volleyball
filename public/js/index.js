@@ -27,6 +27,7 @@ function getEvents() {
       div.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "col-xxl-2", "py-3");
       div.setAttribute("data-bs-toggle", "modal");
       div.setAttribute("data-bs-target", "#modalRegister");
+      div.setAttribute("data-bs-event-id", event.event_id);
 
       let card = document.createElement("div");
       card.classList.add("card", "h-100");
@@ -74,18 +75,12 @@ function getEvents() {
       let description = document.createElement("p");
       if (event.description !== undefined) description.innerHTML = event.description;
 
-      let register = document.createElement("button");
-      register.classList.add("btn", "btn-primary", "mt-auto", "register");
-      register.innerHTML = "Register";
-      register.setAttribute("data-event-id", event.event_id);
-
       cardBody.appendChild(title);
       cardBody.appendChild(maxPeople);
       cardBody.appendChild(organizer);
       cardBody.appendChild(date);
       cardBody.appendChild(location);
       cardBody.appendChild(description);
-      cardBody.appendChild(register);
 
       card.appendChild(cardBody);
 
@@ -135,9 +130,7 @@ modalRegister.addEventListener('show.bs.modal', event => {
   // and then do the updating in a callback.
   //
   // Update the modal's content.
-  const modalTitle = modalRegister.querySelector('.modal-title')
-  const modalBodyInput = modalRegister.querySelector('.modal-body input')
 
-  modalTitle.textContent = `New message to ${recipient}`
-  modalBodyInput.value = recipient
+  const modalEventInput = modalRegister.querySelector('#event_id');
+  modalEventInput.value = eventID
 })

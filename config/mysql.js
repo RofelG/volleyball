@@ -20,7 +20,7 @@ module.exports = {
       query += 'AND type LIKE ? ';
       params.push('%' + body.filter + '%');
     }
-    query += 'ORDER BY date_start DESC LIMIT 25';
+    query += 'ORDER BY date_start ASC LIMIT 25';
     if (get.offset > 0) {
       query += ' OFFSET ' + (get.offset - 1);
     }
@@ -35,24 +35,28 @@ module.exports = {
     return event.insertId;
   },
   postRegisterEvent: async(req, res) => {
-    let query = 'SELECT users FROM event WHERE event_id = ? LIMIT 1';
-    console.log(query);
-    console.log(req[1]);
+    let query = 'SELECT * FROM event WHERE event_id = ? LIMIT 1';
     const eventData = await con.query(query, req[1]).catch(err => { throw err} );
 
     console.log(eventData);
-    let users;
-    if (eventData[0].users === null) {
+    let eventUsers = JSON.parse(eventData[0].users);
+    if (eventUsers == null) {
       users = [req[0]];
     } else {
-      users = JSON.parse(eventData[0].users);
-      users.push(req[0]);
+      console.log(`length vs. max`, eventUsers.length , eventData[0].max);
+      if (eventUsers.length < eventData[0].max) {
+        if(eventUsers.includes(req[0])) {
+          return { error: 'User already registered for event' };
+        }
+
+        eventUsers.push(req[0]);
+      } else {
+        return { error: 'Event is full' };
+      }
     }
 
-    query = 'UPDATE event (users) VALUES (?) WHERE event_id = ?';
-    console.log(query);
-    console.log(users);
-    const event = await con.query(query, [users, req[1]]).catch(err => { throw err} );
+    query = 'UPDATE event SET users=? WHERE event_id = ?';
+    const event = await con.query(query, [JSON.stringify(eventUsers), req[1]]).catch(err => { throw err} );
     return event;
   }
 }

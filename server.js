@@ -171,7 +171,7 @@ app.post('/api/events/post', async (req, res) => {
   }
 });
 
-app.post('/api/events/register/', async(req, res) => {
+app.post('/api/events/register', async(req, res) => {
   try {
     const { event_id } = req.body;
 
@@ -185,14 +185,13 @@ app.post('/api/events/register/', async(req, res) => {
       }
     }
 
-    let user;
+    let userid;
     jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
-      user = user.user_id;
+      console.log(user.user_id);
+      userid = user.user_id;
     });
 
-    console.log(user);
-
-    let output = await con.postRegisterEvent([user, event_id]);
+    let output = await con.postRegisterEvent([userid, parseInt(event_id)]);
     res.status(200).json(output);
   } catch(err) {
     console.log(err);
