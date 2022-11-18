@@ -32,7 +32,7 @@ function getEvents() {
       card.classList.add("card", "h-100");
 
       let cardBody = document.createElement("div");
-      cardBody.classList.add("card-body", "position-relative");
+      cardBody.classList.add("card-body", "position-relative", "d-flex", "flex-column");
 
       let title = document.createElement("h5");
       title.classList.add("card-title");
@@ -74,12 +74,18 @@ function getEvents() {
       let description = document.createElement("p");
       if (event.description !== undefined) description.innerHTML = event.description;
 
+      let register = document.createElement("button");
+      register.classList.add("btn", "btn-primary", "mt-auto", "register");
+      register.innerHTML = "Register";
+      register.setAttribute("data-event-id", event.event_id);
+
       cardBody.appendChild(title);
       cardBody.appendChild(maxPeople);
       cardBody.appendChild(organizer);
       cardBody.appendChild(date);
       cardBody.appendChild(location);
       cardBody.appendChild(description);
+      cardBody.appendChild(register);
 
       card.appendChild(cardBody);
 
@@ -117,3 +123,4 @@ function getEvents() {
 sessionStorage.setItem("offset", 0);
 
 getEvents();
+

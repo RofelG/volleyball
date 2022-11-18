@@ -33,5 +33,26 @@ module.exports = {
     let query = 'INSERT INTO event (cost, date_start, date_end, location, max, name, organizer, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const event = await con.query(query, req).catch(err => { throw err} );
     return event.insertId;
+  },
+  postRegisterEvent: async(req, res) => {
+    let query = 'SELECT users FROM event WHERE event_id = ? LIMIT 1';
+    console.log(query);
+    console.log(req[1]);
+    const eventData = await con.query(query, req[1]).catch(err => { throw err} );
+
+    console.log(eventData);
+    let users;
+    if (eventData[0].users === null) {
+      users = [req[0]];
+    } else {
+      users = JSON.parse(eventData[0].users);
+      users.push(req[0]);
+    }
+
+    query = 'UPDATE event (users) VALUES (?) WHERE event_id = ?';
+    console.log(query);
+    console.log(users);
+    const event = await con.query(query, [users, req[1]]).catch(err => { throw err} );
+    return event;
   }
 }

@@ -171,6 +171,34 @@ app.post('/api/events/post', async (req, res) => {
   }
 });
 
+app.post('/api/events/register/', async(req, res) => {
+  try {
+    const { event_id } = req.body;
+
+    let cookie = req.header('Cookie');
+    cookie = cookie.split(';');
+    let token;
+    for (let i = 0; i < cookie.length; i++) {
+      if (cookie[i].includes('token')) {
+        let temp = cookie[i].split('=');
+        token = temp[1];
+      }
+    }
+
+    let user;
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
+      user = user.user_id;
+    });
+
+    console.log(user);
+
+    let output = await con.postRegisterEvent([user, event_id]);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+})
+
 // index page
 app.get('/', auth, function(req, res) {
   if (!req.auth) {
