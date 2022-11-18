@@ -176,10 +176,12 @@ app.post('/api/events/register', async(req, res) => {
     const { event_id } = req.body;
 
     let cookie = req.header('Cookie');
-    cookie = cookie.split(';');
+    cookie = '_ga=GA1.1.774028535.1668136015; _ga_7LCBMZD6Z8=GS1.1.1668307135.4.0.1668307158.0.0.0; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InJvZmVsX3BfZ2FuYWRvQGhvdG1haWwuY29tIiwiaWF0IjoxNjY4NzUzODUwLCJleHAiOjE2Njg3NjEwNTB9.ur5Nyofo7JkBeQJKdE6pvi2JxNoEemtixVDx_fZNPjs'
+    cookie = cookie.split('; ');
+
     let token;
     for (let i = 0; i < cookie.length; i++) {
-      if (cookie[i].includes('token')) {
+      if (cookie[i].includes('token=')) {
         let temp = cookie[i].split('=');
         token = temp[1];
       }
@@ -187,7 +189,6 @@ app.post('/api/events/register', async(req, res) => {
 
     let userid;
     jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
-      console.log(user.user_id);
       userid = user.user_id;
     });
 

@@ -53,12 +53,10 @@ module.exports = {
     let query = 'SELECT * FROM event WHERE event_id = ? LIMIT 1';
     const eventData = await con.query(query, req[1]).catch(err => { throw err} );
 
-    console.log(eventData);
     let eventUsers = JSON.parse(eventData[0].users);
     if (eventUsers == null) {
-      users = [req[0]];
+      eventUsers = [req[0]];
     } else {
-      console.log(`length vs. max`, eventUsers.length , eventData[0].max);
       if (eventUsers.length < eventData[0].max) {
         if(eventUsers.includes(req[0])) {
           return { error: 'User already registered for event' };
