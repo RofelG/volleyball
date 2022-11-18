@@ -132,5 +132,49 @@ modalRegister.addEventListener('show.bs.modal', event => {
   // Update the modal's content.
 
   const modalEventInput = modalRegister.querySelector('#event_id');
-  modalEventInput.value = eventID
+  modalEventInput.value = eventID;
+
+  fetch('/api/events/get?event_id=' + eventID, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(JSON.parse(data[0].users));
+
+    let modalBody = modalRegister.querySelector('#modalRegisterBody');
+    let table = modalBody.querySelector('#peopleTbl');
+    table.innerHTML = "";
+
+    if (data[0].users === null) {
+      return;
+    }
+
+    fetch('/api/users/names', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(JSON.parse(data[0].users))
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+
+      let modalBody = document.querySelector('#modalRegisterBody');
+      let table = modalBody.querySelector('#peopleTbl');
+
+      data.forEach(user => {
+        let tr = document.createElement("tr");
+        let td = document.createElement("td");
+
+        td.innerHTML = user.first + " " + user.last;
+
+        tr.appendChild(td);
+        table.appendChild(tr);
+      })
+    });
+  });
 })

@@ -11,14 +11,29 @@ module.exports = {
     const user = await con.query(query, req).catch(err => { throw err} );
     return user.insertId;
   },
+  postUserNames: async(req, res) => {
+    let query = 'SELECT first, last FROM user WHERE 1=1 AND ' 
+    let body = req;
+    let params = [];
+    for(let i = 0; i < body.length; i++) {
+      if (i > 0) query += ' OR ';
+      query += 'user_id = ?';
+      params.push(body[i]);
+    }
+    const user = await con.query(query, req).catch(err => { throw err} );
+    return (user === undefined ? undefined : JSON.parse(JSON.stringify(user)));
+  },
   getEvents: async(req, res) => {
     let query = 'SELECT * FROM event WHERE 1=1 ';
     let params = [];
-    let body = req.body;
     let get = req.query;
-    if (body.filter) {
+    if (get.filter) {
       query += 'AND type LIKE ? ';
-      params.push('%' + body.filter + '%');
+      params.push('%' + get.filter + '%');
+    }
+    if (get.event_id) {
+      query += 'AND event_id = ? ';
+      params.push(get.event_id);
     }
     query += 'ORDER BY date_start ASC LIMIT 25';
     if (get.offset > 0) {

@@ -198,6 +198,15 @@ app.post('/api/events/register', async(req, res) => {
   }
 })
 
+app.post('/api/users/names', async(req, res) => {
+  try {
+    let output = await con.postUserNames(req.body);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+})
+
 // index page
 app.get('/', auth, function(req, res) {
   if (!req.auth) {
