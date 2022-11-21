@@ -21,10 +21,11 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <form data-action="/api/events/register">
+        <form class="w-100 text-end" data-action="/api/events/register">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <input type="hidden" id="event_id" name="event_id">
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Register</button>
+          <button type="submit" class="btn btn-primary" data-callback="closeModal">Register</button>
+          <p class="error"></p>
         </form>
       </div>
     </div>
@@ -43,50 +44,50 @@
           <div class="row">
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Event Name">
-                <label for="name" class="form-label">Event Name</label>
+                <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Event Name">
+                <label for="event_name" class="form-label">Event Name</label>
               </div>
             </div>
             <div class="form-group col-6 ">
               <div class="form-floating">
-                <input type="number" class="form-control" id="cost" name="cost" step="0.01">
-                <label for="cost" class="form-label">Cost</label>
+                <input type="number" class="form-control" id="event_cost" name="event_cost" step="0.01">
+                <label for="event_cost" class="form-label">Cost</label>
               </div>
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="number" class="form-control" id="max" name="max" step="1">
-                <label for="max" class="form-label">Max</label>
+                <input type="number" class="form-control" id="event_max" name="event_max" step="1">
+                <label for="event_max" class="form-label">Max</label>
               </div>
             </div>
             <div class="form-group col-12 my-3">
               <div class="form-floating">
-                <textarea class="form-control" id="description" name="description" placeholder="Description" style="height: 100px"></textarea>
-                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="event_description" name="event_description" placeholder="Description" style="height: 100px"></textarea>
+                <label for="event_description" class="form-label">Description</label>
               </div>
             </div>
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="location" name="location" placeholder="Location">
-                <label for="location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="event_location" name="event_location" placeholder="Location">
+                <label for="event_location" class="form-label">Location</label>
               </div>
             </div>
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="type" name="type" placeholder="Type">
-                <label for="type" class="form-label">Type</label>
+                <input type="text" class="form-control" id="event_type" name="event_type" placeholder="Type">
+                <label for="event_type" class="form-label">Type</label>
               </div>
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="date_start" name="date_start" placeholder="Date">
-                <label for="date_start" class="form-label">Date Start</label>
+                <input type="datetime-local" class="form-control" id="event_date_start" name="event_date_start" placeholder="Date">
+                <label for="event_date_start" class="form-label">Date Start</label>
               </div>
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="date_end" name="date_end" placeholder="Date">
-                <label for="date_end" class="form-label">Date End</label>
+                <input type="datetime-local" class="form-control" id="event_date_end" name="event_date_end" placeholder="Date">
+                <label for="event_date_end" class="form-label">Date End</label>
               </div>
             </div>
           </div>

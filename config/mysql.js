@@ -2,17 +2,17 @@ var con = require('../config/database');
 
 module.exports = {
   getUser: async(req, res) => {
-    let query = 'SELECT * FROM user WHERE email = ? LIMIT 1';
+    let query = 'SELECT * FROM user WHERE user_email = ? LIMIT 1';
     const [user] = await con.query(query, req).catch(err => { throw err} );
     return (user === undefined ? undefined : JSON.parse(JSON.stringify(user)));
   },
   createUser: async(req, res) => {
-    let query = 'INSERT INTO user (first, last, email, password, salt) VALUES (?, ?, ?, ?, ?)';
+    let query = 'INSERT INTO user (user_first, user_last, user_email, user_password, user_salt) VALUES (?, ?, ?, ?, ?)';
     const user = await con.query(query, req).catch(err => { throw err} );
     return user.insertId;
   },
   postUserNames: async(req, res) => {
-    let query = 'SELECT first, last FROM user WHERE 1=1 AND ' 
+    let query = 'SELECT user_first, user_last FROM user WHERE 1=1 AND ' 
     let body = req;
     let params = [];
     for(let i = 0; i < body.length; i++) {
@@ -24,7 +24,7 @@ module.exports = {
     return (user === undefined ? undefined : JSON.parse(JSON.stringify(user)));
   },
   getEvents: async(req, res) => {
-    let query = 'SELECT * FROM event WHERE 1=1 ';
+    let query = 'SELECT * FROM event LEFT JOIN user ON user_id = event_organizer LEFT JOIN type ON event_type = type_id WHERE 1=1 ';
     let params = [];
     let get = req.query;
     if (get.filter) {
@@ -35,17 +35,16 @@ module.exports = {
       query += 'AND event_id = ? ';
       params.push(get.event_id);
     }
-    query += 'ORDER BY date_start ASC LIMIT 25';
+    query += 'ORDER BY event_date_start ASC LIMIT 25';
     if (get.offset > 0) {
       query += ' OFFSET ' + (get.offset - 1);
     }
 
-    console.log(query);
     const result = await con.query(query, params).catch(err => { throw err} );
     return (result === undefined ? undefined : JSON.parse(JSON.stringify(result)));
   },
   createEvent: async(req, res) => {
-    let query = 'INSERT INTO event (cost, date_start, date_end, location, max, name, organizer, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    let query = 'INSERT INTO event (event_cost, event_date_start, event_date_end, event_location, event_max, event_name, event_organizer, event_type, event_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const event = await con.query(query, req).catch(err => { throw err} );
     return event.insertId;
   },
@@ -53,13 +52,16 @@ module.exports = {
     let query = 'SELECT * FROM event WHERE event_id = ? LIMIT 1';
     const eventData = await con.query(query, req[1]).catch(err => { throw err} );
 
-    let eventUsers = JSON.parse(eventData[0].users);
+    let eventUsers = JSON.parse(eventData[0].event_users);
+
+    if (req[0] == null) return { error: 'User not found' };
+
     if (eventUsers == null) {
       eventUsers = [req[0]];
     } else {
-      if (eventUsers.length < eventData[0].max) {
+      if (eventUsers.length < eventData[0].event_max) {
         if(eventUsers.includes(req[0])) {
-          return { error: 'User already registered for event' };
+          return { error: 'Already registered for event' };
         }
 
         eventUsers.push(req[0]);
@@ -68,7 +70,7 @@ module.exports = {
       }
     }
 
-    query = 'UPDATE event SET users=? WHERE event_id = ?';
+    query = 'UPDATE event SET event_users=? WHERE event_id = ?';
     const event = await con.query(query, [JSON.stringify(eventUsers), req[1]]).catch(err => { throw err} );
     return event;
   }

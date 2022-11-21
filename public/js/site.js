@@ -23,6 +23,11 @@ function handleSubmit(e) {
       }
     }
 
+    if (res.error) {
+      e.target.querySelector('.error').innerHTML = res.error;
+      return;
+    }
+
     if (e.target.getAttribute('data-callback')) {
       let fn = window[e.target.getAttribute('data-callback')];
       if (typeof fn === 'function') {
@@ -38,3 +43,9 @@ const forms = document.querySelectorAll('form');
 forms.forEach((form) => {
   form.addEventListener('submit', handleSubmit);
 });
+
+function closeModal() {
+  const modal = document.querySelector('.modal.show');
+  const modalInstance = bootstrap.Modal.getInstance(modal);
+  modalInstance.hide();
+}

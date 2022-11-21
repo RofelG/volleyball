@@ -21,6 +21,7 @@ function getEvents() {
     }
 
     Array.from(data).forEach(event => {
+      console.log(event);
       sessionStorage.setItem("offset", parseInt(sessionStorage.getItem('offset')) + 1);
 
       let div = document.createElement("div");
@@ -37,23 +38,23 @@ function getEvents() {
 
       let title = document.createElement("h5");
       title.classList.add("card-title");
-      title.innerHTML = event.name;
+      title.innerHTML = event.event_name;
 
       let maxPeople = document.createElement("span");
       maxPeople.classList.add("max-people");
-      maxPeople.innerHTML = event.max + " <i class=\"fa-solid fa-user-group\"></i>";
+      maxPeople.innerHTML = event.event_max + " <i class=\"fa-solid fa-user-group\"></i>";
 
       let date = document.createElement("p");
       date.classList.add("m-0");
       //convert mysql date to js date
-      let calendarStart = (event.date_start).split('T');
-      let calendarEnd = (event.date_start).split('T');
+      let calendarStart = (event.event_date_start).split('T');
+      let calendarEnd = (event.event_date_start).split('T');
 
-      let dateObj = new Date(event.date_start);
+      let dateObj = new Date(event.event_date_start);
       let dateStartCal = dateObj.toLocaleDateString("en", { month: 'short', day: 'numeric'});
       let dateStart = dateObj.toLocaleTimeString("en", { hour: 'numeric', minute: 'numeric' });
 
-      dateObj = new Date(event.date_end);
+      dateObj = new Date(event.event_date_end);
       let option, dateEnd;
       if (calendarStart[0] === calendarEnd[0]) {
         option = { hour: 'numeric', minute: 'numeric' };
@@ -66,14 +67,14 @@ function getEvents() {
       date.innerHTML = "<i class='fa-regular fa-calendar'></i> " + dateStartCal + "<div class='text-nowrap'>" + dateStart + " - " + dateEnd + "</div>";
 
       let location = document.createElement("p");
-      location.innerHTML = "<i class='fa-solid fa-location-pin'></i> " + event.location;
+      location.innerHTML = "<i class='fa-solid fa-location-pin'></i> " + event.event_location;
 
       let organizer = document.createElement("p");
       organizer.classList.add("m-0");
-      organizer.innerHTML = "<i class='fa-solid fa-user'></i> " + event.organizer;
+      organizer.innerHTML = "<i class='fa-solid fa-user'></i> " + event.user_first;
 
       let description = document.createElement("p");
-      if (event.description !== undefined) description.innerHTML = event.description;
+      if (event.description !== undefined) description.innerHTML = event.event_description;
 
       cardBody.appendChild(title);
       cardBody.appendChild(maxPeople);
@@ -123,13 +124,18 @@ const modalRegister = document.getElementById('modalRegister');
 
 modalRegister.addEventListener('show.bs.modal', event => {
   // Button that triggered the modal
-  const button = event.relatedTarget
+  const button = event.relatedTarget;
   // Extract info from data-bs-* attributes
-  const eventID = button.getAttribute('data-bs-event-id')
+  const eventID = button.getAttribute('data-bs-event-id');
   // If necessary, you could initiate an AJAX request here
   // and then do the updating in a callback.
   //
   // Update the modal's content.
+  const errorFields = event.target.querySelectorAll('.error');
+  console.log(errorFields);
+  Array.from(errorFields).forEach(err => {
+    err.innerHTML = '';
+  });
 
   const modalEventInput = modalRegister.querySelector('#event_id');
   modalEventInput.value = eventID;
@@ -142,13 +148,13 @@ modalRegister.addEventListener('show.bs.modal', event => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(JSON.parse(data[0].users));
+    console.log(JSON.parse(data[0].event_users));
 
     let modalBody = modalRegister.querySelector('#modalRegisterBody');
     let table = modalBody.querySelector('#peopleTbl');
     table.innerHTML = "";
 
-    if (data[0].users === null) {
+    if (data[0].event_users === null) {
       return;
     }
 
@@ -157,7 +163,7 @@ modalRegister.addEventListener('show.bs.modal', event => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(JSON.parse(data[0].users))
+      body: JSON.stringify(JSON.parse(data[0].event_users))
     })
     .then(response => response.json())
     .then(data => {
@@ -170,7 +176,7 @@ modalRegister.addEventListener('show.bs.modal', event => {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
 
-        td.innerHTML = user.first + " " + user.last;
+        td.innerHTML = user.user_first + " " + user.user_last;
 
         tr.appendChild(td);
         table.appendChild(tr);

@@ -81,20 +81,20 @@ app.post("/api/login", async (req, res) => {
 
   try {
     // Get user input
-    const { email, password } = req.body;
+    const { user_email, user_password } = req.body;
 
     // Validate user input
-    if (!(email && password)) {
+    if (!(user_email && user_password)) {
       res.status(400).send("All input is required");
       return;
     }
 
-    let user = await con.getUser(email);
+    let user = await con.getUser(user_email);
 
-    if (user && (await bcrypt.compare(password + user.salt, user.password))) {
+    if (user && (await bcrypt.compare(user_password + user.user_salt, user.user_password))) {
       // Create token
       const token = jwt.sign(
-        { user_id: user.user_id, email },
+        { user_id: user.user_id, user_email },
         process.env.TOKEN_KEY,
         {
           expiresIn: "2h",
@@ -104,9 +104,9 @@ app.post("/api/login", async (req, res) => {
       // save user token
       let output = {
         user_id: user.user_id,
-        user_first: user.first,
-        user_last: user.last,
-        user_email: user.email,
+        user_first: user.user_first,
+        user_last: user.user_last,
+        user_email: user.user_email,
         token: token
       };
 
@@ -176,7 +176,6 @@ app.post('/api/events/register', async(req, res) => {
     const { event_id } = req.body;
 
     let cookie = req.header('Cookie');
-    cookie = '_ga=GA1.1.774028535.1668136015; _ga_7LCBMZD6Z8=GS1.1.1668307135.4.0.1668307158.0.0.0; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6InJvZmVsX3BfZ2FuYWRvQGhvdG1haWwuY29tIiwiaWF0IjoxNjY4NzUzODUwLCJleHAiOjE2Njg3NjEwNTB9.ur5Nyofo7JkBeQJKdE6pvi2JxNoEemtixVDx_fZNPjs'
     cookie = cookie.split('; ');
 
     let token;
@@ -188,11 +187,13 @@ app.post('/api/events/register', async(req, res) => {
     }
 
     let userid;
+
     jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
       userid = user.user_id;
     });
 
-    let output = await con.postRegisterEvent([userid, parseInt(event_id)]);
+
+    let output = await con.postRegisterEvent([parseInt(userid), parseInt(event_id)]);
     res.status(200).json(output);
   } catch(err) {
     console.log(err);
