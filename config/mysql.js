@@ -35,7 +35,8 @@ module.exports = {
       query += 'AND event_id = ? ';
       params.push(get.event_id);
     }
-    query += 'ORDER BY event_date_start ASC LIMIT 25';
+    query += ' AND event_status = 1 ORDER BY event_date_start ASC';
+
     if (get.offset > 0) {
       query += ' OFFSET ' + (get.offset - 1);
     }
@@ -73,5 +74,12 @@ module.exports = {
     query = 'UPDATE event SET event_users=? WHERE event_id = ?';
     const event = await con.query(query, [JSON.stringify(eventUsers), req[1]]).catch(err => { throw err} );
     return event;
+  },
+  deleteEvent: async(req, res) => {
+    let query = 'UPDATE event SET event_status=? WHERE event_id = ?';
+    console.log(query);
+    console.log([-1, req]);
+    const event = await con.query(query, [-1, req]).catch(err => { throw err} );
+    return (event === undefined ? false : true);
   }
 }

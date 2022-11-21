@@ -21,7 +21,6 @@ function getEvents() {
     }
 
     Array.from(data).forEach(event => {
-      console.log(event);
       sessionStorage.setItem("offset", parseInt(sessionStorage.getItem('offset')) + 1);
 
       let div = document.createElement("div");
@@ -132,13 +131,16 @@ modalRegister.addEventListener('show.bs.modal', event => {
   //
   // Update the modal's content.
   const errorFields = event.target.querySelectorAll('.error');
-  console.log(errorFields);
+
   Array.from(errorFields).forEach(err => {
     err.innerHTML = '';
   });
 
   const modalEventInput = modalRegister.querySelector('#event_id');
   modalEventInput.value = eventID;
+
+  const modalDelete = modalRegister.querySelector('#deleteEvent');
+  modalDelete.setAttribute('data-id', eventID);
 
   fetch('/api/events/get?event_id=' + eventID, {
     method: 'GET',
@@ -148,7 +150,6 @@ modalRegister.addEventListener('show.bs.modal', event => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(JSON.parse(data[0].event_users));
 
     let modalBody = modalRegister.querySelector('#modalRegisterBody');
     let table = modalBody.querySelector('#peopleTbl');
@@ -156,6 +157,12 @@ modalRegister.addEventListener('show.bs.modal', event => {
 
     if (data[0].event_users === null) {
       return;
+    }
+
+    if (sessionStorage.getItem('user') == data[0].event_organizer) {
+      modalDelete.style.display = "inline-block";
+    } else {
+      modalDelete.style.display = "none";
     }
 
     fetch('/api/users/names', {
@@ -167,7 +174,6 @@ modalRegister.addEventListener('show.bs.modal', event => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
 
       let modalBody = document.querySelector('#modalRegisterBody');
       let table = modalBody.querySelector('#peopleTbl');
@@ -183,4 +189,28 @@ modalRegister.addEventListener('show.bs.modal', event => {
       })
     });
   });
-})
+});
+
+const modalEventDelete = document.getElementById('deleteEvent');
+
+modalEventDelete.addEventListener('click', event => {
+  const button = event.target;
+  const eventID = button.getAttribute('data-id');
+
+  fetch('/api/events/delete?event_id=' + eventID, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+
+    closeModal();
+    
+    sessionStorage.setItem("offset", 0);
+    document.getElementById('eventContainer').innerHTML = '';
+    getEvents();
+  });
+});

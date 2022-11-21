@@ -22,8 +22,9 @@
       </div>
       <div class="modal-footer">
         <form class="w-100 text-end" data-action="/api/events/register">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <input type="hidden" id="event_id" name="event_id">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="deleteEvent" type="button" class="btn btn-danger" data-callback="closeModal" data-id="">Delete</button>
           <button type="submit" class="btn btn-primary" data-callback="closeModal">Register</button>
           <p class="error"></p>
         </form>

@@ -198,7 +198,36 @@ app.post('/api/events/register', async(req, res) => {
   } catch(err) {
     console.log(err);
   }
-})
+});
+
+app.get('/api/events/delete', async(req, res) => {
+  try {
+    const { event_id } = req.query;
+
+    let cookie = req.header('Cookie');
+    cookie = cookie.split('; ');
+
+    let token;
+    for (let i = 0; i < cookie.length; i++) {
+      if (cookie[i].includes('token=')) {
+        let temp = cookie[i].split('=');
+        token = temp[1];
+      }
+    }
+
+    let verify = jwt.verify(token, process.env.TOKEN_KEY);
+
+    if (!verify) {
+      res.status(400).send('Invalid Token');
+    }
+
+    console.log(event_id);
+    let output = await con.deleteEvent(event_id);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+});
 
 app.post('/api/users/names', async(req, res) => {
   try {
