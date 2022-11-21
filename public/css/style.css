@@ -53,6 +53,10 @@
   opacity: 0.8;
 }
 
+.modal-event-add {
+  min-height: 150px;
+}
+
 .error {
   color: #dc3545;
 }
