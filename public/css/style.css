@@ -14,15 +14,20 @@
   color: rgb(113, 113, 113);
   transition: color 0.3s ease-out;
 }
-.filter-row .filter-btn svg:hover {
+.filter-row .filter-btn span {
+  transition: opacity 0.3s ease-out;
+  font-size: 0.8rem;
+}
+.filter-row .filter-btn:hover svg {
   color: rgb(0, 0, 0);
 }
-.filter-row .filter-btn span {
-  font-size: 0.8rem;
+.filter-row .filter-btn:hover span {
+  opacity: 0.6;
 }
 
 .card {
   cursor: pointer;
+  transition: box-shadow 0.3s ease-out;
 }
 .card .card-body.card-event svg {
   height: 6rem;
@@ -41,6 +46,12 @@
   top: 1rem;
   right: 1rem;
 }
+.card:hover {
+  box-shadow: 0 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+.card:hover .card-body.card-event svg {
+  opacity: 0.8;
+}
 
 .error {
   color: #dc3545;
@@ -50,4 +61,35 @@ footer {
   bottom: 0;
   width: 100%;
   background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background-color: #212529;
+    color: white;
+  }
+  h1, h2, h3, h4, h5, h6, p, a, span, li, .card-title, .card-text, .card-subtitle {
+    color: white;
+  }
+  .navbar {
+    background-color: #343a40 !important;
+  }
+  .navbar .navbar-brand {
+    color: white !important;
+  }
+  .filter-row .filter-btn:hover svg {
+    color: rgb(255, 255, 255);
+  }
+  .card {
+    background-color: #343a40;
+  }
+  .card-body.card-event svg {
+    opacity: 0.8;
+  }
+  .error {
+    color: #dc3545;
+  }
+  footer {
+    background-color: #343a40;
+  }
 }/*# sourceMappingURL=style.css.map */
