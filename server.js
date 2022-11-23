@@ -33,15 +33,15 @@ app.use('/static', express.static('public'));
 app.post('/api/register', async (req, res) => {
   try {
     // Get user input
-    const { first, last, email, password } = req.body;
+    const { user_first, user_last, user_email, user_password } = req.body;
 
     // Validate user input
-    if (!(email && password && first && last)) {
+    if (!(user_email && user_password && user_first && user_last)) {
       res.status(400).send("All input is required");
     }
 
     // Validate if user exist in our database
-    let oldUser = await con.getUser(email);
+    let oldUser = await con.getUser(user_email);
 
     if (oldUser != undefined) {
       return res.status(409).send("User Already Exist. Please Login");
@@ -49,13 +49,13 @@ app.post('/api/register', async (req, res) => {
 
     let salt = crypto.randomBytes(32).toString('hex');
     //Encrypt user password
-    let encryptedPassword = await bcrypt.hash(password + salt, 10);
+    let encryptedPassword = await bcrypt.hash(user_password + salt, 10);
 
-    let user = await con.createUser([first, last, email, encryptedPassword, salt]);
+    let user = await con.createUser([user_first, user_last, user_email, encryptedPassword, salt]);
 
     // Create token
     const token = jwt.sign(
-      { user_id: user, email },
+      { user_id: user, user_email },
         process.env.TOKEN_KEY,
       {
         expiresIn: "2h",
@@ -64,9 +64,9 @@ app.post('/api/register', async (req, res) => {
     // save user token
     let output = {
       user_id: user,
-      user_first: first,
-      user_last: last,
-      user_email: email,
+      user_first: user_first,
+      user_last: user_last,
+      user_email: user_email,
       token: token
     };
 
