@@ -96,7 +96,7 @@ app.post("/api/login", async (req, res) => {
         { user_id: user.user_id, user_email },
         process.env.TOKEN_KEY,
         {
-          expiresIn: "2h",
+          expiresIn: "15m",
         }
       );
 
@@ -109,7 +109,10 @@ app.post("/api/login", async (req, res) => {
         token: token
       };
 
-      res.cookie('token', token, { httpOnly: true }).status(200).json(output);
+      res.cookie('token', token, {
+        secure: process.env.NODE_ENV !== 'development',
+        httpOnly: true 
+      }).status(200).json(output);
     } else {
       res.status(400).send("Invalid Credentials");
     }
@@ -120,6 +123,9 @@ app.post("/api/login", async (req, res) => {
 
 app.get('/api/events/get', auth, async (req, res) => {
   try {
+
+
+
     let output = await con.getEvents(req);
     res.status(200).json(output);
   } catch(err) {
