@@ -1,13 +1,17 @@
 function handleSubmit(e) {
   e.preventDefault();
 
+  console.log(e.target);
+
   // Get the form data
   const data = new FormData(e.target);
 
   // Get the values from the form
   const value = Object.fromEntries(data.entries());
 
-  fetch(e.target.getAttribute('data-action'), {
+  const action = (e.target.querySelector('button[type=submit]') ? e.target.querySelector('button[type=submit]').getAttribute('data-action') : e.target.querySelector('input[type=submit]').getAttribute('data-action'));
+
+  fetch(e.target.getAttribute('data-action') + (action == undefined || action == null ? '' : action), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -28,8 +32,8 @@ function handleSubmit(e) {
       return;
     }
 
-    if (e.target.getAttribute('data-callback')) {
-      let fn = window[e.target.getAttribute('data-callback')];
+    if (e.target.getAttribute('data-callback') || e.target.querySelector('button[type=submit]').getAttribute('data-callback') || e.target.querySelector('button[type=submit]').getAttribute('data-callback')) {
+      let fn = window[(e.target.getAttribute('data-callback') ? e.target.getAttribute('data-callback') : e.target.querySelector('button[type=submit]').getAttribute('data-callback') ? e.target.querySelector('button[type=submit]').getAttribute('data-callback') : e.target.querySelector('input[type=submit]').getAttribute('data-callback'))];
       if (typeof fn === 'function') {
         fn();
       }

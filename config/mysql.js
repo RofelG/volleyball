@@ -17,7 +17,7 @@ module.exports = {
     return user;
   },
   postUserNames: async(req, res) => {
-    let query = 'SELECT user_first, user_last FROM user WHERE 1=1 AND ' 
+    let query = 'SELECT user_id, user_first, user_last FROM user WHERE 1=1 AND ' 
     let body = req;
     let params = [];
     for(let i = 0; i < body.length; i++) {
@@ -73,6 +73,27 @@ module.exports = {
         eventUsers.push(req[0]);
       } else {
         return { error: 'Event is full' };
+      }
+    }
+
+    query = 'UPDATE event SET event_users=? WHERE event_id = ?';
+    const event = await con.query(query, [JSON.stringify(eventUsers), req[1]]).catch(err => { throw err} );
+    return event;
+  },
+  postRegisterEventRemove: async(req, res) => {
+    let query = 'SELECT * FROM event WHERE event_id = ? LIMIT 1';
+    const eventData = await con.query(query, req[1]).catch(err => { throw err} );
+
+    let eventUsers = JSON.parse(eventData[0].event_users);
+
+    if (req[0] == null) return { error: 'User not found' };
+
+    if (eventUsers != null) {
+      for (let users in eventUsers) {
+        if (eventUsers[users] == req[0]) {
+          eventUsers.splice(users, 1);
+          break;
+        }
       }
     }
 

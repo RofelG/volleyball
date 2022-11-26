@@ -215,6 +215,9 @@ modalRegister.addEventListener('show.bs.modal', event => {
       let modalBody = document.querySelector('#modalRegisterBody');
       let table = modalBody.querySelector('#peopleTbl');
 
+      modalRegister.querySelector('button[type=submit]').innerHTML = "Register";
+      modalRegister.querySelector('button[type=submit]').removeAttribute('data-action', undefined);
+
       data.forEach(user => {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
@@ -223,7 +226,13 @@ modalRegister.addEventListener('show.bs.modal', event => {
 
         tr.appendChild(td);
         table.appendChild(tr);
-      })
+
+        if (user.user_id == parseInt(sessionStorage.getItem('user'))) {
+          modalRegister.querySelector('button[type=submit]').innerHTML = "Remove";
+          modalRegister.querySelector('button[type=submit]').setAttribute('data-action', '/remove');
+        }
+      });
+
     });
   });
 });

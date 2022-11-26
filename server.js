@@ -196,6 +196,35 @@ app.post('/api/events/register', auth, async(req, res) => {
   }
 });
 
+app.post('/api/events/register/remove', auth, async(req, res) => {
+  try {
+    const { event_id } = req.body;
+
+    let cookie = req.header('Cookie');
+    cookie = cookie.split('; ');
+
+    let token;
+    for (let i = 0; i < cookie.length; i++) {
+      if (cookie[i].includes('token=')) {
+        let temp = cookie[i].split('=');
+        token = temp[1];
+      }
+    }
+
+    let userid;
+
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, user) => {
+      userid = user.user_id;
+    });
+
+
+    let output = await con.postRegisterEventRemove([parseInt(userid), parseInt(event_id)]);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+});
+
 app.get('/api/events/delete', auth, async(req, res) => {
   try {
     const { event_id } = req.query;
