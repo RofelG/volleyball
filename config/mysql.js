@@ -33,7 +33,7 @@ module.exports = {
     let params = [];
     let get = req.query;
     if (get.filter) {
-      query += 'AND type LIKE ? ';
+      query += 'AND type_name LIKE ? ';
       params.push('%' + get.filter + '%');
     }
     if (get.event_id) {

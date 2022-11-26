@@ -18,10 +18,12 @@
   height: 1.5rem;
   color: rgb(113, 113, 113);
   transition: color 0.3s ease-out;
+  pointer-events: none;
 }
 .filter-row .filter-btn span {
   transition: opacity 0.3s ease-out;
   font-size: 0.8rem;
+  pointer-events: none;
 }
 .filter-row .filter-btn:hover svg {
   color: rgb(0, 0, 0);

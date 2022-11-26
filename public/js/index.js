@@ -1,7 +1,8 @@
 //fetch events from database
-function getEvents() {
+function getEvents(filters = undefined) {
 
-  fetch('/api/events/get?offset=' + sessionStorage.getItem('offset'), {
+
+  fetch('/api/events/get?offset=' + sessionStorage.getItem('offset') + (filters !== undefined ? '&filter=' + filters : ''), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -124,13 +125,12 @@ function getFilters() {
   }).then(response => response.json())
   .then(data => {
 
-    console.log(data);
-
     for (let type in data) {
       let filterContainer = document.getElementById("filterContainer");
 
       let div = document.createElement("div");
       div.classList.add("filter-btn", "d-flex", "flex-column", "py-4", "pe-5");
+      div.setAttribute('data-filter', data[type].type_name);
 
       let icon = document.createElement("i");
 
@@ -250,4 +250,12 @@ modalEventDelete.addEventListener('click', event => {
     document.getElementById('eventContainer').innerHTML = '';
     getEvents();
   });
+});
+
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.classList.contains('filter-btn')) {
+    sessionStorage.setItem("offset", 0);
+    document.getElementById('eventContainer').innerHTML = '';
+    getEvents(e.target.getAttribute('data-filter'));
+  }
 });
