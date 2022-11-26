@@ -77,11 +77,14 @@ footer {
 }
 
 @media (prefers-color-scheme: dark) {
+  * {
+    color-scheme: dark;
+  }
   html, body {
     background-color: #212529;
     color: white;
   }
-  h1, h2, h3, h4, h5, h6, p, a, span, li, .card-title, .card-text, .card-subtitle {
+  h1, h2, h3, h4, h5, h6, p, a, span, li, .nav-link, .card-title, .card-text, .card-subtitle {
     color: white;
   }
   .navbar {
@@ -104,6 +107,39 @@ footer {
   }
   .error {
     color: #dc3545;
+  }
+  .form-floating {
+    background-color: #212529;
+    color: white;
+  }
+  .form-control {
+    background-color: #212529;
+    color: white;
+  }
+  .form-control:focus {
+    background-color: #000;
+  }
+  .form-control:-webkit-autofill {
+    background-color: #212529;
+    color: white;
+  }
+  .form-control:autofill {
+    background-color: #212529;
+    color: white;
+  }
+  .table {
+    --bs-table-color: #fff;
+    --bs-table-bg: #212529;
+    --bs-table-border-color: #373b3e;
+    --bs-table-striped-bg: #2c3034;
+    --bs-table-striped-color: #fff;
+    --bs-table-active-bg: #373b3e;
+    --bs-table-active-color: #fff;
+    --bs-table-hover-bg: #323539;
+    --bs-table-hover-color: #fff;
+  }
+  .modal {
+    --bs-modal-bg: #343a40;
   }
   footer {
     background-color: #343a40;

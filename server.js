@@ -118,7 +118,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-app.get('/api/events/get', async (req, res) => {
+app.get('/api/events/get', auth, async (req, res) => {
   try {
     let output = await con.getEvents(req);
     res.status(200).json(output);
@@ -127,7 +127,7 @@ app.get('/api/events/get', async (req, res) => {
   }
 });
 
-app.post('/api/events/post', async (req, res) => {
+app.post('/api/events/post', auth, async (req, res) => {
   try {
     // Get user input
     const { cost, date_start, date_end, location, max, name, type, description } = req.body;
@@ -161,7 +161,7 @@ app.post('/api/events/post', async (req, res) => {
   }
 });
 
-app.post('/api/events/register', async(req, res) => {
+app.post('/api/events/register', auth, async(req, res) => {
   try {
     const { event_id } = req.body;
 
@@ -190,7 +190,7 @@ app.post('/api/events/register', async(req, res) => {
   }
 });
 
-app.get('/api/events/delete', async(req, res) => {
+app.get('/api/events/delete', auth, async(req, res) => {
   try {
     const { event_id } = req.query;
 
@@ -219,7 +219,7 @@ app.get('/api/events/delete', async(req, res) => {
   }
 });
 
-app.post('/api/users/names', async(req, res) => {
+app.post('/api/users/names', auth, async(req, res) => {
   try {
     let output = await con.postUserNames(req.body);
     res.status(200).json(output);
@@ -228,7 +228,7 @@ app.post('/api/users/names', async(req, res) => {
   }
 });
 
-app.get('/api/type/get', async (req, res) => {
+app.get('/api/type/get', auth, async (req, res) => {
   try {
     let output = await con.getType(req);
     res.status(200).json(output);
@@ -241,6 +241,7 @@ app.get('/api/type/get', async (req, res) => {
 app.get('/', auth, function(req, res) {
   if (!req.auth) {
     res.redirect('/login');
+    res.end();
   }
 
   res.render('pages/index');
@@ -252,6 +253,15 @@ app.get('/login', function(req, res) {
 
 app.get('/register', function(req, res) {
   res.render('pages/register');
+});
+
+app.get("/logout", async (req, res) => {
+  try {
+    res.clearCookie('token').status(200).redirect('/login');
+    res.end();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.listen(port, () => {
