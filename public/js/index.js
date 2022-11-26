@@ -115,9 +115,46 @@ function getEvents() {
   });
 }
 
+function getFilters() {
+  fetch('/api/type/get', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(response => response.json())
+  .then(data => {
+
+    console.log(data);
+
+    for (let type in data) {
+      let filterContainer = document.getElementById("filterContainer");
+
+      let div = document.createElement("div");
+      div.classList.add("filter-btn", "d-flex", "flex-column", "py-4", "pe-5");
+
+      let icon = document.createElement("i");
+
+      let iconClass = data[type].type_icon.split(" ");
+      for (let c in iconClass) {
+        icon.classList.add(iconClass[c]);
+      }
+
+      let span = document.createElement("span");
+      span.innerHTML = data[type].type_name;
+
+      div.appendChild(icon);
+      div.appendChild(span);
+
+      filterContainer.appendChild(div);
+    }
+  });
+}
+
 sessionStorage.setItem("offset", 0);
 
+getFilters();
 getEvents();
+
 
 const modalRegister = document.getElementById('modalRegister');
 

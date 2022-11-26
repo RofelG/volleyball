@@ -81,5 +81,11 @@ module.exports = {
     console.log([-1, req]);
     const event = await con.query(query, [-1, req]).catch(err => { throw err} );
     return (event === undefined ? false : true);
-  }
+  },
+  getType: async(req, res) => {
+    let query = 'SELECT * FROM type WHERE type_status = 1 ORDER BY type_name ASC';
+
+    const result = await con.query(query).catch(err => { throw err} );
+    return (result === undefined ? undefined : JSON.parse(JSON.stringify(result)));
+  },
 }

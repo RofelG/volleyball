@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
 .filter-row {
   overflow-x: scroll;
   -ms-overflow-style: none;
@@ -27,8 +33,14 @@
   }
 }
 
+a {
+  .card {
+    cursor: pointer;
+  }
+}
+
 .card {
-  cursor: pointer;
+  
   transition: box-shadow 0.3s ease-out;
   .card-body {
     &.card-event {
@@ -49,6 +61,7 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
+      font-size: 0.8rem;
     }
   }
   &:hover {
@@ -111,6 +124,8 @@ footer {
   }
 
   .card-body {
+    color:black;
+
     &.card-event {
       svg {
         opacity: 0.8;

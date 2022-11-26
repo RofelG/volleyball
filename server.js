@@ -78,7 +78,6 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.post("/api/login", async (req, res) => {
-
   try {
     // Get user input
     const { user_email, user_password } = req.body;
@@ -127,15 +126,6 @@ app.get('/api/events/get', async (req, res) => {
     console.log(err);
   }
 });
-
-// app.get('/api/events/get/:id', async (req, res) => {
-//   try {
-//     let output = await con.getEvent(req);
-//     res.status(200).json(output);
-//   } catch(err) {
-//     console.log(err);
-//   }
-// });
 
 app.post('/api/events/post', async (req, res) => {
   try {
@@ -236,12 +226,20 @@ app.post('/api/users/names', async(req, res) => {
   } catch(err) {
     console.log(err);
   }
-})
+});
+
+app.get('/api/type/get', async (req, res) => {
+  try {
+    let output = await con.getType(req);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+});
 
 // index page
 app.get('/', auth, function(req, res) {
   if (!req.auth) {
-    console.log('Not Authenticated');
     res.redirect('/login');
   }
 
