@@ -127,6 +127,16 @@ footer {
     background-color: #212529;
     color: white;
   }
+  .dropdown-menu {
+    background-color: #343a40;
+    color: white;
+  }
+  .dropdown-menu .dropdown-item {
+    color: white;
+  }
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #212529;
+  }
   .table {
     --bs-table-color: #fff;
     --bs-table-bg: #212529;

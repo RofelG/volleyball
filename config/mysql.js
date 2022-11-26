@@ -11,6 +11,11 @@ module.exports = {
     const user = await con.query(query, req).catch(err => { throw err} );
     return user.insertId;
   },
+  changePassword: async(req, res) => {
+    let query = 'UPDATE user SET user_password = ?, user_salt = ? WHERE user_id = ?';
+    const user = await con.query(query, req).catch(err => { throw err} );
+    return user;
+  },
   postUserNames: async(req, res) => {
     let query = 'SELECT user_first, user_last FROM user WHERE 1=1 AND ' 
     let body = req;

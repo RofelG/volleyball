@@ -101,3 +101,42 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="modalChangePass" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalChangePassId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalChangePassId">Change Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form data-action="/api/user/changepassword" id="changePassForm">
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="password" class="form-control" id="password_current" name="password_current" placeholder="Current Password">
+                <label for="password_current" class="form-label">Current Password</label>
+              </div>
+            </div>
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="password" class="form-control" id="password_change" name="password_change" placeholder="Password">
+                <label for="password_change" class="form-label">Password</label>
+              </div>
+            </div>
+            <div class="form-group col-12 mb-3">
+              <div class="form-floating">
+                <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm Password">
+                <label for="password_confirm" class="form-label">Confirm Password</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" data-bs-dismiss="modal"></input>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -234,6 +234,37 @@ app.post('/api/users/names', auth, async(req, res) => {
   }
 });
 
+app.post('/api/user/changepassword', auth, async(req, res) => {
+  try {
+    const { password_current, password_change, password_confirm } = req.body;
+
+    if (!(password_current && password_change && password_confirm)) {
+      res.status(400).send('All input is required');
+      return;
+    }
+
+    if (password_change !== password_confirm) {
+      res.status(400).send('Passwords do not match');
+      return;
+    }
+
+    let user = await con.getUser(req.user.user_email);
+
+    if (user && !(await bcrypt.compare(password_current + user.user_salt, user.user_password))) {
+      res.status(400).send('Incorrect Password');
+      return;
+    }
+
+    let salt = crypto.randomBytes(32).toString('hex');
+    let encryptedPassword = await bcrypt.hash(password_change + salt, 10);
+
+    let output = await con.changePassword([encryptedPassword, salt, req.user.user_id]);
+    res.status(200).json(output);
+  } catch(err) {
+    console.log(err);
+  }
+});
+
 app.get('/api/type/get', auth, async (req, res) => {
   try {
     let output = await con.getType(req);
