@@ -135,11 +135,12 @@ app.get('/api/events/get', auth, async (req, res) => {
 
 app.post('/api/events/post', auth, async (req, res) => {
   try {
+    console.log(req.body);
     // Get user input
-    const { cost, date_start, date_end, location, max, name, type, description } = req.body;
+    const { event_cost, event_date_start, event_date_end, event_location, event_max, event_name, event_type, event_description } = req.body;
 
     // Validate user input
-    if (!(cost && date_start && date_end && location && max && name && type)) {
+    if (!(event_cost && event_date_start && event_date_end && event_location && event_max && event_name && event_type)) {
       res.status(400).send("All input is required");
     }
 
@@ -158,7 +159,7 @@ app.post('/api/events/post', auth, async (req, res) => {
       organizer = user.user_id;
     });
 
-    let event = await con.createEvent([cost, date_start, date_end, location, max, name, organizer, type, description]);
+    let event = await con.createEvent([event_cost, event_date_start, event_date_end, event_location, event_max, event_name, organizer, event_type, event_description]);
 
     // return new event
     res.status(201).json(event);

@@ -153,11 +153,17 @@ footer {
     color: white;
     &:focus {
       background-color: #000;
+      color: white;
     }
     &:autofill {
       background-color: #212529;
       color: white;
     }
+  }
+
+  .form-select {
+    background-color: #212529;
+    color: white;
   }
 
   .dropdown-menu {

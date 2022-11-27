@@ -1,13 +1,19 @@
 function handleSubmit(e) {
   e.preventDefault();
 
-  console.log(e.target);
-
   // Get the form data
   const data = new FormData(e.target);
 
+
   // Get the values from the form
   const value = Object.fromEntries(data.entries());
+
+  if (e.target.querySelectorAll('select')) {
+    const selects = e.target.querySelectorAll('select');
+    for (let i = 0; i < selects.length; i++) {
+      value[selects[i].name] = selects[i].value;
+    }
+  }
 
   const action = (e.target.querySelector('button[type=submit]') ? e.target.querySelector('button[type=submit]').getAttribute('data-action') : e.target.querySelector('input[type=submit]').getAttribute('data-action'));
 
@@ -38,6 +44,8 @@ function handleSubmit(e) {
         fn();
       }
     }
+
+    sessionStorage.setItem("offset", 0);
   });
 
 }

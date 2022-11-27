@@ -147,6 +147,41 @@ function getFilters() {
 
       filterContainer.appendChild(div);
     }
+
+    let eventType = document.getElementsByClassName('event-type');
+
+    console.log(eventType);
+
+    for(let i = 0; i < eventType.length; i++) {
+      let div = document.createElement("div");
+      div.classList.add("form-floating");
+      let select = document.createElement("select");
+      select.classList.add("form-select");
+      select.setAttribute("name", "event_type")
+      select.setAttribute("id", "event_type");
+      select.setAttribute("aria-label", "Type");
+
+      let option = document.createElement("option");
+      option.setAttribute("selected", "");
+      option.innerHTML = "Select One...";
+      select.appendChild(option);
+      for (let type in data) {
+        let option = document.createElement("option");
+        option.setAttribute("value", data[type].type_id);
+        option.innerHTML = data[type].type_name;
+
+        select.appendChild(option);
+
+      }
+
+      let label = document.createElement("label");
+      label.setAttribute("for", "floatingSelect");
+      label.innerHTML = "Type";
+
+      eventType[i].appendChild(div);
+      div.appendChild(select);
+      div.appendChild(label);
+    }
   });
 }
 
