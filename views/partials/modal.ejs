@@ -37,28 +37,37 @@
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalEventId">Add Event</h5>
+        <h5 class="modal-title" id="modalEventId">Add an Event</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form data-action="/api/events/post" data-callback="getEvents" id="eventPostForm">
+      <form class="needs-validation" data-action="/api/events/post" id="eventPostForm" novalidate>
         <div class="modal-body">
           <div class="row">
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Event Name">
+                <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Event Name" required>
                 <label for="event_name" class="form-label">Event Name</label>
+                <div class="invalid-feedback">
+                  Please enter an Event Name.
+                </div>
               </div>
             </div>
             <div class="form-group col-6 ">
               <div class="form-floating">
-                <input type="number" class="form-control" id="event_cost" name="event_cost" step="0.01">
+                <input type="number" class="form-control" id="event_cost" name="event_cost" step="0.01" required>
                 <label for="event_cost" class="form-label">Cost</label>
+                <div class="invalid-feedback">
+                  Please enter a Cost.
+                </div>
               </div>
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="number" class="form-control" id="event_max" name="event_max" step="1">
+                <input type="number" class="form-control" id="event_max" name="event_max" step="1" required>
                 <label for="event_max" class="form-label">Max</label>
+                <div class="invalid-feedback">
+                  Please enter max amount of people.
+                </div>
               </div>
             </div>
             <div class="form-group col-12 my-3">
@@ -69,29 +78,39 @@
             </div>
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="event_location" name="event_location" placeholder="Location">
+                <input type="text" class="form-control" id="event_location" name="event_location" placeholder="Location" required>
                 <label for="event_location" class="form-label">Location</label>
+                <div class="invalid-feedback">
+                  Please enter a Location.
+                </div>
               </div>
             </div>
             <div class="form-group col-12 mb-3 event-type">
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="event_date_start" name="event_date_start" placeholder="Date">
+                <input type="datetime-local" class="form-control" id="event_date_start" name="event_date_start" placeholder="Date" required>
                 <label for="event_date_start" class="form-label">Date Start</label>
+                <div class="invalid-feedback">
+                  Please enter a start Date.
+                </div>
               </div>
             </div>
             <div class="form-group col-6">
               <div class="form-floating">
-                <input type="datetime-local" class="form-control" id="event_date_end" name="event_date_end" placeholder="Date">
+                <input type="datetime-local" class="form-control" id="event_date_end" name="event_date_end" placeholder="Date" required>
                 <label for="event_date_end" class="form-label">Date End</label>
+                <div class="invalid-feedback">
+                  Please enter an end Date.
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-primary" data-bs-dismiss="modal" data-callback="closeModal"></input>
+          <button type="submit" class="btn btn-primary" data-callback="closeModal">Submit</button>
+          <p class="error w-100 text-end"></p>
         </div>
       </form>
     </div>
@@ -105,32 +124,42 @@
         <h5 class="modal-title" id="modalChangePassId">Change Password</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form data-action="/api/user/changepassword" id="changePassForm">
+      <form class="needs-validation" data-action="/api/user/changepassword" data-callback="closeModal" id="changePassForm" novalidate>
         <div class="modal-body">
           <div class="row">
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" id="password_current" name="password_current" placeholder="Current Password">
+                <input type="password" class="form-control" id="password_current" name="password_current" placeholder="Current Password" required>
                 <label for="password_current" class="form-label">Current Password</label>
+                <div class="invalid-feedback">
+                  Please enter your current Password.
+                </div>
               </div>
             </div>
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" id="password_change" name="password_change" placeholder="Password">
+                <input type="password" class="form-control" id="password_change" name="password_change" placeholder="Password" required>
                 <label for="password_change" class="form-label">Password</label>
+                <div class="invalid-feedback">
+                  Please enter a Password.
+                </div>
               </div>
             </div>
             <div class="form-group col-12 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm Password">
+                <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm Password" required>
                 <label for="password_confirm" class="form-label">Confirm Password</label>
+                <div class="invalid-feedback">
+                  Please reenter your Password.
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-primary" data-bs-dismiss="modal"></input>
+          <input type="submit" class="btn btn-primary"></input>
+          <p class="error w-100 text-end"></p>
         </div>
       </form>
     </div>

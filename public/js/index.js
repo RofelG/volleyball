@@ -10,6 +10,10 @@ function getEvents(filters = undefined) {
   .then(response => response.json())
   .then(data => {
 
+    if (sessionStorage.getItem('offset') == 0) {
+      document.getElementById("eventContainer").innerHTML = "";
+    }
+
     if (document.querySelector('#eventAdd')) {
       document.querySelector('#eventAdd').remove();
     }
@@ -134,7 +138,7 @@ function getFilters() {
       let filterContainer = document.getElementById("filterContainer");
 
       let div = document.createElement("div");
-      div.classList.add("filter-btn", "d-flex", "flex-column", "py-4", "pe-5");
+      div.classList.add("filter-btn", "d-flex", "flex-column", "py-4", "me-5");
       div.setAttribute('data-filter', data[type].type_name);
 
       let icon = document.createElement("i");
@@ -206,8 +210,6 @@ function getEventNames(eventID = undefined) {
     let modalBody = modalRegister.querySelector('#modalRegisterBody');
     let table = modalBody.querySelector('#peopleTbl');
     table.innerHTML = "";
-
-    console.log(data);
 
     if (sessionStorage.getItem('user') == data[0].event_organizer) {
       if (new Date(data[0].event_date_end) < new Date()) {
@@ -333,7 +335,9 @@ document.addEventListener('click', function(e) {
     document.getElementById('eventContainer').innerHTML = '';
     getEvents(e.target.getAttribute('data-filter'));
 
+    
     let filterBtns = document.querySelectorAll('.filter-btn');
+
     Array.from(filterBtns).forEach(btn => {
       btn.classList.add('muted');
     });

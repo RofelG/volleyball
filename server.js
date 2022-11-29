@@ -37,14 +37,14 @@ app.post('/api/register', async (req, res) => {
 
     // Validate user input
     if (!(user_email && user_password && user_first && user_last)) {
-      res.status(400).send("All input is required");
+      res.status(400).json({error:"All input is required"});
     }
 
     // Validate if user exist in our database
     let oldUser = await con.getUser(user_email);
 
     if (oldUser != undefined) {
-      return res.status(409).send("User Already Exist. Please Login");
+      return res.status(409).json({error:"User Already Exist. Please Login"});
     }
 
     let salt = crypto.randomBytes(32).toString('hex');
@@ -84,7 +84,26 @@ app.post("/api/login", async (req, res) => {
 
     // Validate user input
     if (!(user_email && user_password)) {
-      res.status(400).send("All input is required");
+      res.status(400).json({error:"All input is required"});
+      return;
+    }
+
+    let cookie = req.header('Cookie');
+
+    let loginCount = 0;
+    if (cookie) {
+      cookie = cookie.split('; ');
+
+      for (let i = 0; i < cookie.length; i++) {
+        if (cookie[i].includes('login=')) {
+          let temp = cookie[i].split('=');
+          loginCount = temp[1];
+        }
+      }
+    }
+
+    if (loginCount >= 5) {
+      res.status(400).json({error:"Too many login attempts. Please try again later."});
       return;
     }
 
@@ -114,7 +133,12 @@ app.post("/api/login", async (req, res) => {
         httpOnly: true 
       }).status(200).json(output);
     } else {
-      res.status(400).send("Invalid Credentials");
+      loginCount++;
+
+      res.cookie('login', loginCount, {
+        secure: true,
+        httpOnly: true
+      }).status(400).json({error:"Invalid Credentials"});
     }
   } catch (err) {
     console.log(err);
@@ -123,9 +147,6 @@ app.post("/api/login", async (req, res) => {
 
 app.get('/api/events/get', auth, async (req, res) => {
   try {
-
-
-
     let output = await con.getEvents(req);
     res.status(200).json(output);
   } catch(err) {
@@ -135,13 +156,12 @@ app.get('/api/events/get', auth, async (req, res) => {
 
 app.post('/api/events/post', auth, async (req, res) => {
   try {
-    console.log(req.body);
     // Get user input
     const { event_cost, event_date_start, event_date_end, event_location, event_max, event_name, event_type, event_description } = req.body;
 
     // Validate user input
     if (!(event_cost && event_date_start && event_date_end && event_location && event_max && event_name && event_type)) {
-      res.status(400).send("All input is required");
+      res.status(400).json({error: "All input is required"});
     }
 
     let cookie = req.header('Cookie');
@@ -269,12 +289,12 @@ app.post('/api/user/changepassword', auth, async(req, res) => {
     const { password_current, password_change, password_confirm } = req.body;
 
     if (!(password_current && password_change && password_confirm)) {
-      res.status(400).send('All input is required');
+      res.status(400).json({error: "All input is required"});
       return;
     }
 
     if (password_change !== password_confirm) {
-      res.status(400).send('Passwords do not match');
+      res.status(400).json({error: "Passwords do not match"});
       return;
     }
 
