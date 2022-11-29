@@ -37,6 +37,8 @@ module.exports = {
     let body = req;
     console.log(req);
     let params = [];
+    if (body.length == 0) return {};
+
     for(let i = 0; i < body.length; i++) {
       if (i > 0) query += ' OR ';
       query += 'user_id = ?';
@@ -64,7 +66,7 @@ module.exports = {
       query += 'AND event_id = ? ';
       params.push(get.event_id);
     }
-    query += ' AND (("' + curDate + '" < event_date_end AND event_status = 1) OR (event_organizer = 1 AND "' + prevDate + '" < event_date_end )) ORDER BY event_date_start ASC';
+    query += ' AND (("' + curDate + '" < event_date_end AND event_status = 1) OR (event_organizer = 1 AND "' + prevDate + '" < event_date_end AND event_status = 1)) ORDER BY event_date_start ASC';
 
     if (get.offset > 0) {
       query += ' OFFSET ' + (get.offset - 1);

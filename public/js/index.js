@@ -22,7 +22,6 @@ function getEvents(filters = undefined) {
 
     Array.from(data).forEach(event => {
       let dateOB = false;
-      console.log(new Date(event.event_date_end) < new Date(), new Date(event.event_date_end), new Date());
       if (new Date(event.event_date_end) < new Date()) {
         dateOB = true;
       }
@@ -191,39 +190,14 @@ function getFilters() {
   });
 }
 
-sessionStorage.setItem("offset", 0);
-
-getFilters();
-getEvents();
-
-
-const modalRegister = document.getElementById('modalRegister');
-
-modalRegister.addEventListener('show.bs.modal', event => {
-  // Button that triggered the modal
-  const button = event.relatedTarget;
-  // Extract info from data-bs-* attributes
-  const eventID = button.getAttribute('data-bs-event-id');
-  // If necessary, you could initiate an AJAX request here
-  // and then do the updating in a callback.
-  //
-  // Update the modal's content.
-  const errorFields = event.target.querySelectorAll('.error');
-
-  Array.from(errorFields).forEach(err => {
-    err.innerHTML = '';
-  });
-
-  const modalEventInput = modalRegister.querySelector('#event_id');
-  modalEventInput.value = eventID;
-
-  const modalDelete = modalRegister.querySelector('#deleteEvent');
-  modalDelete.setAttribute('data-id', eventID);
-
-  const modalRegisterEvent = modalRegister.querySelector('#registerEvent');
+function getEventNames(eventID = undefined) {
 
   modalRegisterEvent.classList.remove("d-none");
   modalRegisterEvent.classList.add("d-inline-block");
+
+  eventID = modalRegisterEvent.getAttribute("data-id");
+
+  console.log(eventID);
 
   fetch('/api/events/get?event_id=' + eventID, {
     method: 'GET',
@@ -239,17 +213,17 @@ modalRegister.addEventListener('show.bs.modal', event => {
 
     if (sessionStorage.getItem('user') == data[0].event_organizer) {
       if (new Date(data[0].event_date_end) < new Date()) {
-        modalDelete.classList.remove("d-inline-block");
-        modalDelete.classList.add("d-none");
+        modalDeleteEvent.classList.remove("d-inline-block");
+        modalDeleteEvent.classList.add("d-none");
         modalRegisterEvent.classList.remove("d-inline-block");
         modalRegisterEvent.classList.add("d-none");
       } else {
-        modalDelete.classList.remove("d-none");
-        modalDelete.classList.add("d-inline-block");
+        modalDeleteEvent.classList.remove("d-none");
+        modalDeleteEvent.classList.add("d-inline-block");
       }
     } else {
-      modalDelete.classList.remove("d-inline-block");
-      modalDelete.classList.add("d-none");
+      modalDeleteEvent.classList.remove("d-inline-block");
+      modalDeleteEvent.classList.add("d-none");
     }
 
     if (data[0].event_users === null) {
@@ -289,6 +263,45 @@ modalRegister.addEventListener('show.bs.modal', event => {
 
     });
   });
+}
+
+sessionStorage.setItem("offset", 0);
+
+getFilters();
+getEvents();
+
+
+const modalRegister = document.getElementById('modalRegister');
+
+const modalEventInput = modalRegister.querySelector('#event_id');
+
+const modalDeleteEvent = modalRegister.querySelector('#deleteEvent');
+
+const modalRegisterEvent = modalRegister.querySelector('#registerEvent');
+
+
+modalRegister.addEventListener('show.bs.modal', event => {
+  // Button that triggered the modal
+  const button = event.relatedTarget;
+  // Extract info from data-bs-* attributes
+  const eventID = button.getAttribute('data-bs-event-id');
+  // If necessary, you could initiate an AJAX request here
+  // and then do the updating in a callback.
+  //
+  // Update the modal's content.
+  const errorFields = event.target.querySelectorAll('.error');
+
+  Array.from(errorFields).forEach(err => {
+    err.innerHTML = '';
+  });
+
+  modalRegister.querySelector('#event_id').value = eventID;
+
+  modalDeleteEvent.setAttribute('data-id', eventID);
+
+  modalRegisterEvent.setAttribute('data-id', eventID);
+
+  getEventNames(eventID);
 });
 
 const modalEventDelete = document.getElementById('deleteEvent');
