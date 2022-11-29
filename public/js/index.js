@@ -1,7 +1,6 @@
 //fetch events from database
 function getEvents(filters = undefined) {
 
-
   fetch('/api/events/get?offset=' + sessionStorage.getItem('offset') + (filters !== undefined ? '&filter=' + filters : ''), {
     method: 'GET',
     headers: {
@@ -22,10 +21,17 @@ function getEvents(filters = undefined) {
     }
 
     Array.from(data).forEach(event => {
+      let dateOB = false;
+      console.log(new Date(event.event_date_end) < new Date(), new Date(event.event_date_end), new Date());
+      if (new Date(event.event_date_end) < new Date()) {
+        dateOB = true;
+      }
+
       sessionStorage.setItem("offset", parseInt(sessionStorage.getItem('offset')) + 1);
 
       let div = document.createElement("div");
       div.classList.add("col-12", "col-md-6", "col-lg-4", "col-xl-3", "col-xxl-2", "py-3");
+      if (dateOB) div.classList.add('muted');
       div.setAttribute("data-bs-toggle", "modal");
       div.setAttribute("data-bs-target", "#modalRegister");
       div.setAttribute("data-bs-event-id", event.event_id);
@@ -214,6 +220,11 @@ modalRegister.addEventListener('show.bs.modal', event => {
   const modalDelete = modalRegister.querySelector('#deleteEvent');
   modalDelete.setAttribute('data-id', eventID);
 
+  const modalRegisterEvent = modalRegister.querySelector('#registerEvent');
+
+  modalRegisterEvent.classList.remove("d-none");
+  modalRegisterEvent.classList.add("d-inline-block");
+
   fetch('/api/events/get?event_id=' + eventID, {
     method: 'GET',
     headers: {
@@ -222,19 +233,27 @@ modalRegister.addEventListener('show.bs.modal', event => {
   })
   .then(response => response.json())
   .then(data => {
-
     let modalBody = modalRegister.querySelector('#modalRegisterBody');
     let table = modalBody.querySelector('#peopleTbl');
     table.innerHTML = "";
 
-    if (data[0].event_users === null) {
-      return;
+    if (sessionStorage.getItem('user') == data[0].event_organizer) {
+      if (new Date(data[0].event_date_end) < new Date()) {
+        modalDelete.classList.remove("d-inline-block");
+        modalDelete.classList.add("d-none");
+        modalRegisterEvent.classList.remove("d-inline-block");
+        modalRegisterEvent.classList.add("d-none");
+      } else {
+        modalDelete.classList.remove("d-none");
+        modalDelete.classList.add("d-inline-block");
+      }
+    } else {
+      modalDelete.classList.remove("d-inline-block");
+      modalDelete.classList.add("d-none");
     }
 
-    if (sessionStorage.getItem('user') == data[0].event_organizer) {
-      modalDelete.style.display = "inline-block";
-    } else {
-      modalDelete.style.display = "none";
+    if (data[0].event_users === null) {
+      return;
     }
 
     fetch('/api/users/names', {

@@ -50,6 +50,12 @@ module.exports = {
     let query = 'SELECT * FROM event LEFT JOIN user ON user_id = event_organizer LEFT JOIN type ON event_type = type_id WHERE 1=1 ';
     let params = [];
     let get = req.query;
+
+    let curDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    let prevDate = new Date();
+    prevDate.setDate(prevDate.getDate() - 30);
+    prevDate = prevDate.toISOString().slice(0, 19).replace('T', ' ');
+
     if (get.filter) {
       query += 'AND type_name LIKE ? ';
       params.push('%' + get.filter + '%');
@@ -58,7 +64,7 @@ module.exports = {
       query += 'AND event_id = ? ';
       params.push(get.event_id);
     }
-    query += ' AND event_status = 1 ORDER BY event_date_start ASC';
+    query += ' AND (("' + curDate + '" < event_date_end AND event_status = 1) OR (event_organizer = 1 AND "' + prevDate + '" < event_date_end )) ORDER BY event_date_start ASC';
 
     if (get.offset > 0) {
       query += ' OFFSET ' + (get.offset - 1);
