@@ -35,7 +35,7 @@ module.exports = {
   postUserNames: async(req, res) => {
     let query = 'SELECT user_id, user_first, user_last FROM user WHERE 1=1 AND ' 
     let body = req;
-    console.log(req);
+    
     let params = [];
     if (body.length == 0) return {};
 

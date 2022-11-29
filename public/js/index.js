@@ -155,8 +155,6 @@ function getFilters() {
 
     let eventType = document.getElementsByClassName('event-type');
 
-    console.log(eventType);
-
     for(let i = 0; i < eventType.length; i++) {
       let div = document.createElement("div");
       div.classList.add("form-floating");
@@ -196,8 +194,6 @@ function getEventNames(eventID = undefined) {
   modalRegisterEvent.classList.add("d-inline-block");
 
   eventID = modalRegisterEvent.getAttribute("data-id");
-
-  console.log(eventID);
 
   fetch('/api/events/get?event_id=' + eventID, {
     method: 'GET',
@@ -318,7 +314,6 @@ modalEventDelete.addEventListener('click', event => {
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data);
 
     closeModal();
     
