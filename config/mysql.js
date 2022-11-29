@@ -15,7 +15,7 @@ function logQueries(req) {
 
 module.exports = {
   getUser: async(req, res) => {
-    let query = 'SELECT * FROM user WHERE user_email = ? LIMIT 1';
+    let query = 'SELECT user_id, user_first, user_last, user_email, user_password, user_salt FROM user WHERE user_email = ? AND user_status = 1 LIMIT 1';
     const [user] = await con.query(query, req).catch(err => { throw err} );
     logQueries([query, req, req.url]);
     return (user === undefined ? undefined : JSON.parse(JSON.stringify(user)));
@@ -33,9 +33,9 @@ module.exports = {
     return user;
   },
   postUserNames: async(req, res) => {
-    let query = 'SELECT user_id, user_first, user_last FROM user WHERE 1=1 AND ' 
+    let query = 'SELECT user_id, user_first, user_last, user_email FROM user WHERE 1=1 AND ' 
     let body = req;
-    
+
     let params = [];
     if (body.length == 0) return {};
 
@@ -49,7 +49,7 @@ module.exports = {
     return (user === undefined ? undefined : JSON.parse(JSON.stringify(user)));
   },
   getEvents: async(req, res) => {
-    let query = 'SELECT * FROM event LEFT JOIN user ON user_id = event_organizer LEFT JOIN type ON event_type = type_id WHERE 1=1 ';
+    let query = 'SELECT event_id, event_name, event_location, event_organizer, user_id, user_first, user_last, event_max, event_cost, type_name, event_date_start, event_date_end, event_description, event_users FROM event LEFT JOIN user ON user_id = event_organizer LEFT JOIN type ON event_type = type_id WHERE 1=1 ';
     let params = [];
     let get = req.query;
 
@@ -133,14 +133,13 @@ module.exports = {
   },
   deleteEvent: async(req, res) => {
     let query = 'UPDATE event SET event_status=? WHERE event_id = ?';
-    console.log(query);
-    console.log([-1, req]);
+
     const event = await con.query(query, [-1, req]).catch(err => { throw err} );
     logQueries([query, [-1, req], req.url]);
     return (event === undefined ? false : true);
   },
   getType: async(req, res) => {
-    let query = 'SELECT * FROM type WHERE type_status = 1 ORDER BY type_name ASC';
+    let query = 'SELECT type_id, type_name, type_icon FROM type WHERE type_status = 1 ORDER BY type_name ASC';
 
     const result = await con.query(query).catch(err => { throw err} );
     logQueries([query, null, req.url]);

@@ -207,6 +207,8 @@ function getEventNames(eventID = undefined) {
     let table = modalBody.querySelector('#peopleTbl');
     table.innerHTML = "";
 
+    console.log(data);
+
     if (sessionStorage.getItem('user') == data[0].event_organizer) {
       if (new Date(data[0].event_date_end) < new Date()) {
         modalDeleteEvent.classList.remove("d-inline-block");
@@ -241,6 +243,8 @@ function getEventNames(eventID = undefined) {
 
       modalRegister.querySelector('button[type=submit]').innerHTML = "Register";
       modalRegister.querySelector('button[type=submit]').removeAttribute('data-action', undefined);
+
+      if (Object.keys(data).length === 0) return false;
 
       data.forEach(user => {
         let tr = document.createElement("tr");
