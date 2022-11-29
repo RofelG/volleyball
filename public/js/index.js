@@ -332,5 +332,12 @@ document.addEventListener('click', function(e) {
     sessionStorage.setItem("offset", 0);
     document.getElementById('eventContainer').innerHTML = '';
     getEvents(e.target.getAttribute('data-filter'));
+
+    let filterBtns = document.querySelectorAll('.filter-btn');
+    Array.from(filterBtns).forEach(btn => {
+      btn.classList.add('muted');
+    });
+
+    e.target.classList.remove('muted');
   }
 });
