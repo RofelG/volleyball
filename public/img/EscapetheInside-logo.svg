@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 1024 1024" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs/>
+<g id="Door" vectornator:layerName="Door">
+<path d="M399.743 99.5182L410.12 924.482" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="40"/>
+<path d="M400.46 130.066L186.943 226.092L195.188 773.206L402.919 893.934C402.919 893.934 398.871 131.364 400.46 130.066Z" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="20"/>
+<path d="M293.972 504.383" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="20"/>
+<path d="M235.283 512C235.283 507.932 238.58 504.634 242.648 504.634C246.716 504.634 250.014 507.932 250.014 512C250.014 516.068 246.716 519.366 242.648 519.366C238.58 519.366 235.283 516.068 235.283 512Z" fill="#3395ff" fill-rule="nonzero" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="20"/>
+</g>
+<g id="Person" vectornator:layerName="Person">
+<path d="M574.217 382.811C577.321 349.606 606.754 325.204 639.959 328.308C673.164 331.412 697.566 360.845 694.462 394.05C691.359 427.255 661.925 451.657 628.72 448.553C595.515 445.45 571.114 416.016 574.217 382.811Z" fill="#000000" fill-rule="nonzero" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="0.1"/>
+<path d="M664.701 476.168L563.815 530.167L488.341 471.532" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="35"/>
+<path d="M665.49 456.246L744.731 604.637" fill="none" opacity="1" stroke="#000000" stroke-linecap="butt" stroke-linejoin="round" stroke-width="105"/>
+<path d="M689.887 463.044L784.545 407.661L868.324 462.323" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="35"/>
+<path d="M641.419 837.044L643.882 701.582L701.36 612.198" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="35"/>
+<path d="M958.097 736.389L843.326 701.47L770.691 578.547" fill="none" opacity="1" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="35"/>
+</g>
+</svg>
