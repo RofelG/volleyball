@@ -124,7 +124,7 @@ footer {
     .navbar-brand {
       color: white !important;
       img {
-        color: white;
+        filter: invert(1);
       }
     }
   }

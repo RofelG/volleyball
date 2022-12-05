@@ -104,7 +104,7 @@ footer {
     color: white !important;
   }
   .navbar .navbar-brand img {
-    color: white;
+    filter: invert(1);
   }
   .filter-row .filter-btn:hover svg {
     color: rgb(255, 255, 255);
