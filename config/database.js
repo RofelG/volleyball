@@ -1,8 +1,10 @@
 const mysql = require('mysql');
 const util = require('util');
 
+// Get Environment Variables
 const { DB_HOST, DB_USER, DB_PASS, DB_DB } = process.env;
 
+// Create Connection to Database
 const connection = {
   host: DB_HOST,
   user: DB_USER,
@@ -12,6 +14,7 @@ const connection = {
 
 let con = mysql.createConnection(connection)
 
+// Promisify Query Function
 con.query = util.promisify(con.query).bind(con);
 
 con.connect(function(err) {
